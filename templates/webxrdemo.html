@@ -1,52 +1,57 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>WebXR Cube</title>
     <style>
-        body { margin: 0; }
-        canvas { display: block; }
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            display: block;
+        }
     </style>
 </head>
+
 <body>
     <h1>If you can see this, the file is being served!</h1>
     <script type="module">
         import * as THREE from 'https://threejs.org/build/three.module.js';
         import { VRButton } from 'https://threejs.org/examples/jsm/webxr/VRButton.js';
-    
+
         let camera, scene, renderer;
         let geometry, material, mesh;
-    
+
         init();
         animate();
-    
+
         function init() {
             camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 100); // Increase far plane
             camera.position.z = 6; // Move camera outside the cube
-    
+
             scene = new THREE.Scene();
-    
-            // Create the holodeck room
-            const roomSize = 10;
+
+            // Create the grid wall
+            const wallSize = 10;
             const divisions = 10;
-            const roomMaterial = new THREE.LineBasicMaterial({
+            const wallMaterial = new THREE.LineBasicMaterial({
                 color: 0xffff66, // Slight yellow color
             });
-    
+
             for (let i = 0; i <= divisions; i++) {
-                 const j = (i / divisions) * roomSize - roomSize / 2;
-                // Horizontal lines on all faces
-                for (let k = -roomSize / 2; k <= roomSize / 2; k += roomSize / divisions) {
-                    addLine(new THREE.Vector3(-roomSize / 2, j, k), new THREE.Vector3(roomSize / 2, j, k), roomMaterial);
-                }
-                // Vertical lines on all faces
-                for (let k = -roomSize / 2; k <= roomSize / 2; k += roomSize / divisions) {
-                    addLine(new THREE.Vector3(j, -roomSize / 2, k), new THREE.Vector3(j, roomSize / 2, k), roomMaterial);
-                }
+                const j = (i / divisions) * wallSize - wallSize / 2;
+
+                // Lines parallel to X-axis
+                addLine(new THREE.Vector3(-wallSize / 2, j, 0), new THREE.Vector3(wallSize / 2, j, 0), wallMaterial);
+
+                // Lines parallel to Y-axis
+                addLine(new THREE.Vector3(j, -wallSize / 2, 0), new THREE.Vector3(j, wallSize / 2, 0), wallMaterial);
             }
-    
+
             // Create the blue cube
             geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-            material = new THREE.MeshStandardMaterial({ color: 0x0000ff, metalness: 1, roughness: 0 }); // Blue color, fully metallic, fully smooth
+            material = new THREE.MeshStandardMaterial({ color: 0x0000ff}); // Blue color, fully metallic, fully smooth
             mesh = new THREE.Mesh(geometry, material);
             scene.add(mesh);
 
@@ -54,39 +59,40 @@
             const light = new THREE.PointLight(0xffffff, 1, 100);
             light.position.set(0, 0, 5);
             scene.add(light);
-    
+
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.xr.enabled = true;
             renderer.setClearColor(0xd3d3d3); // Set background color to light grey
             document.body.appendChild(renderer.domElement);
-    
+
             document.body.appendChild(VRButton.createButton(renderer));
-    
+
             window.addEventListener('resize', onWindowResize, false);
         }
-    
+
         function animate() {
             renderer.setAnimationLoop(function () {
                 renderer.render(scene, camera);
             });
         }
-    
+
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
-    
+
         function addLine(start, end, material) {
             const points = [];
             points.push(start, end);
-    
+
             const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    
+
             const line = new THREE.Line(geometry, material);
             scene.add(line);
         }
     </script>
 </body>
+
 </html>
