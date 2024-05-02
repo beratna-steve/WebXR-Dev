@@ -36,19 +36,24 @@
                 const j = (i / divisions) * roomSize - roomSize / 2;
                 addLine(new THREE.Vector3(-roomSize / 2, j, -roomSize / 2), new THREE.Vector3(roomSize / 2, j, -roomSize / 2), roomMaterial); // Horizontal lines on front face
                 addLine(new THREE.Vector3(-roomSize / 2, j, roomSize / 2), new THREE.Vector3(roomSize / 2, j, roomSize / 2), roomMaterial); // Horizontal lines on back face
-                addLine(new THREE.Vector3(-roomSize / 2, -roomSize / 2, j), new THREE.Vector3(roomSize / 2, -roomSize / 2, j), roomMaterial); // Horizontal lines on bottom face
-                addLine(new THREE.Vector3(-roomSize / 2, roomSize / 2, j), new THREE.Vector3(roomSize / 2, roomSize / 2, j), roomMaterial); // Horizontal lines on top face
                 addLine(new THREE.Vector3(j, -roomSize / 2, -roomSize / 2), new THREE.Vector3(j, roomSize / 2, -roomSize / 2), roomMaterial); // Vertical lines on front face
                 addLine(new THREE.Vector3(j, -roomSize / 2, roomSize / 2), new THREE.Vector3(j, roomSize / 2, roomSize / 2), roomMaterial); // Vertical lines on back face
                 addLine(new THREE.Vector3(-roomSize / 2, -roomSize / 2, j), new THREE.Vector3(-roomSize / 2, roomSize / 2, j), roomMaterial); // Vertical lines on left face
                 addLine(new THREE.Vector3(roomSize / 2, -roomSize / 2, j), new THREE.Vector3(roomSize / 2, roomSize / 2, j), roomMaterial); // Vertical lines on right face
+                addLine(new THREE.Vector3(-roomSize / 2, -roomSize / 2, j), new THREE.Vector3(roomSize / 2, -roomSize / 2, j), roomMaterial); // Horizontal lines on bottom face
+                addLine(new THREE.Vector3(-roomSize / 2, roomSize / 2, j), new THREE.Vector3(roomSize / 2, roomSize / 2, j), roomMaterial); // Horizontal lines on top face
             }
     
             // Create the blue cube
             geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-            material = new THREE.MeshBasicMaterial({ color: 0x0000ff }); // Blue color
+            material = new THREE.MeshStandardMaterial({ color: 0x0000ff, metalness: 1, roughness: 0 }); // Blue color, fully metallic, fully smooth
             mesh = new THREE.Mesh(geometry, material);
             scene.add(mesh);
+
+            // Add a light so the metallic effect is visible
+            const light = new THREE.PointLight(0xffffff, 1, 100);
+            light.position.set(0, 0, 5);
+            scene.add(light);
     
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -72,16 +77,16 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
-
+    
         function addLine(start, end, material) {
             const points = [];
             points.push(start, end);
-
+    
             const geometry = new THREE.BufferGeometry().setFromPoints(points);
-
+    
             const line = new THREE.Line(geometry, material);
             scene.add(line);
-        }        
+        }
     </script>
 </body>
 </html>
