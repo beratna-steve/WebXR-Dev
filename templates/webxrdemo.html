@@ -20,13 +20,13 @@
         animate();
     
         function init() {
-            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
-            camera.position.z = 1;
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 100); // Increase far plane
+            camera.position.z = 6; // Move camera outside the cube
     
             scene = new THREE.Scene();
     
             // Create the graph paper cube
-            const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
+            const cubeGeometry = new THREE.BoxGeometry(10, 10, 10); // Increase cube size
             const cubeMaterial = new THREE.MeshBasicMaterial({
                 color: 0x000000,
                 wireframe: true
@@ -52,7 +52,6 @@
     
         function animate() {
             renderer.setAnimationLoop(function () {
-                // Removed rotation
                 renderer.render(scene, camera);
             });
         }
