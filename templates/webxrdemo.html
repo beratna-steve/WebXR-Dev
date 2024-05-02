@@ -25,24 +25,25 @@
     
             scene = new THREE.Scene();
     
-            // Create the graph paper cube
-            const cubeGeometry = new THREE.BoxGeometry(10, 10, 10); // Increase cube size
-            const cubeMaterial = new THREE.MeshBasicMaterial({
+            // Create the holodeck room
+            const roomGeometry = new THREE.BoxGeometry(10, 10, 10); // Increase cube size
+            const roomMaterial = new THREE.MeshBasicMaterial({
                 color: 0x000000,
                 wireframe: true
             });
-            const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-            scene.add(cube);
+            const room = new THREE.Mesh(roomGeometry, roomMaterial);
+            scene.add(room);
     
+            // Create the blue cube
             geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
             material = new THREE.MeshBasicMaterial({ color: 0x0000ff }); // Blue color
-    
             mesh = new THREE.Mesh(geometry, material);
             scene.add(mesh);
     
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.xr.enabled = true;
+            renderer.setClearColor(0xd3d3d3); // Set background color to light grey
             document.body.appendChild(renderer.domElement);
     
             document.body.appendChild(VRButton.createButton(renderer));
