@@ -26,12 +26,23 @@
             scene = new THREE.Scene();
     
             // Create the holodeck room
-            const roomGeometry = new THREE.BoxGeometry(10, 10, 10, 10, 10, 10); // Increase cube size and subdivisions
+            const roomSize = 10;
+            const divisions = 10;
             const roomMaterial = new THREE.LineBasicMaterial({
                 color: 0xffff66, // Slight yellow color
             });
-            const room = new THREE.LineSegments(new THREE.WireframeGeometry(roomGeometry), roomMaterial);
-            scene.add(room);
+    
+            for (let i = 0; i <= divisions; i++) {
+                const j = (i / divisions) * roomSize - roomSize / 2;
+                addLine(new THREE.Vector3(-roomSize / 2, j, -roomSize / 2), new THREE.Vector3(roomSize / 2, j, -roomSize / 2), roomMaterial); // Horizontal lines on front face
+                addLine(new THREE.Vector3(-roomSize / 2, j, roomSize / 2), new THREE.Vector3(roomSize / 2, j, roomSize / 2), roomMaterial); // Horizontal lines on back face
+                addLine(new THREE.Vector3(-roomSize / 2, -roomSize / 2, j), new THREE.Vector3(roomSize / 2, -roomSize / 2, j), roomMaterial); // Horizontal lines on bottom face
+                addLine(new THREE.Vector3(-roomSize / 2, roomSize / 2, j), new THREE.Vector3(roomSize / 2, roomSize / 2, j), roomMaterial); // Horizontal lines on top face
+                addLine(new THREE.Vector3(j, -roomSize / 2, -roomSize / 2), new THREE.Vector3(j, roomSize / 2, -roomSize / 2), roomMaterial); // Vertical lines on front face
+                addLine(new THREE.Vector3(j, -roomSize / 2, roomSize / 2), new THREE.Vector3(j, roomSize / 2, roomSize / 2), roomMaterial); // Vertical lines on back face
+                addLine(new THREE.Vector3(-roomSize / 2, -roomSize / 2, j), new THREE.Vector3(-roomSize / 2, roomSize / 2, j), roomMaterial); // Vertical lines on left face
+                addLine(new THREE.Vector3(roomSize / 2, -roomSize / 2, j), new THREE.Vector3(roomSize / 2, roomSize / 2, j), roomMaterial); // Vertical lines on right face
+            }
     
             // Create the blue cube
             geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
@@ -60,6 +71,13 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+    
+        function addLine(start, end, material) {
+            const geometry = new THREE.Geometry();
+            geometry.vertices.push(start, end);
+            const line = new THREE.Line(geometry, material);
+            scene.add(line);
         }
     </script>
 </body>
