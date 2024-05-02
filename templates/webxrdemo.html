@@ -26,12 +26,11 @@
             scene = new THREE.Scene();
     
             // Create the holodeck room
-            const roomGeometry = new THREE.BoxGeometry(10, 10, 10); // Increase cube size
-            const roomMaterial = new THREE.MeshBasicMaterial({
-                color: 0x000000,
-                wireframe: true
+            const roomGeometry = new THREE.BoxGeometry(10, 10, 10, 10, 10, 10); // Increase cube size and subdivisions
+            const roomMaterial = new THREE.LineBasicMaterial({
+                color: 0xffff66, // Slight yellow color
             });
-            const room = new THREE.Mesh(roomGeometry, roomMaterial);
+            const room = new THREE.LineSegments(new THREE.WireframeGeometry(roomGeometry), roomMaterial);
             scene.add(room);
     
             // Create the blue cube
