@@ -13,7 +13,6 @@
         import * as THREE from 'https://threejs.org/build/three.module.js';
         import { VRButton } from 'https://threejs.org/examples/jsm/webxr/VRButton.js';
 
-        // Your JavaScript code goes here
         let camera, scene, renderer;
         let geometry, material, mesh;
 
@@ -27,7 +26,7 @@
             scene = new THREE.Scene();
 
             geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-            material = new THREE.MeshNormalMaterial();
+            material = new THREE.MeshBasicMaterial({ color: 0x0000ff }); // Blue color
 
             mesh = new THREE.Mesh(geometry, material);
             scene.add(mesh);
@@ -44,8 +43,7 @@
 
         function animate() {
             renderer.setAnimationLoop(function () {
-                mesh.rotation.x += 0.01;
-                mesh.rotation.y += 0.01;
+                // Removed rotation
                 renderer.render(scene, camera);
             });
         }
