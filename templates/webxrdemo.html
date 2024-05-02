@@ -72,13 +72,16 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
-    
+
         function addLine(start, end, material) {
-            const geometry = new THREE.Geometry();
-            geometry.vertices.push(start, end);
+            const points = [];
+            points.push(start, end);
+
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
             const line = new THREE.Line(geometry, material);
             scene.add(line);
-        }
+        }        
     </script>
 </body>
 </html>
