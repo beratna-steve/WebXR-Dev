@@ -32,21 +32,40 @@
 
             scene = new THREE.Scene();
 
-            // Create the grid wall
+            // Create the grid walls
             const wallSize = 10;
             const divisions = 10;
             const wallMaterial = new THREE.LineBasicMaterial({
                 color: 0xffff66, // Slight yellow color
             });
 
-            for (let i = 0; i <= divisions; i++) {
-                const j = (i / divisions) * wallSize - wallSize / 2;
+            // Create six walls and rotate them to form a cube
+            for (let wall = 0; wall < 6; wall++) {
+                const wallGroup = new THREE.Group();
+                for (let i = 0; i <= divisions; i++) {
+                    const j = (i / divisions) * wallSize - wallSize / 2;
 
-                // Lines parallel to X-axis
-                addLine(new THREE.Vector3(-wallSize / 2, j, 0), new THREE.Vector3(wallSize / 2, j, 0), wallMaterial);
+                    // Lines parallel to X-axis
+                    addLine(new THREE.Vector3(-wallSize / 2, j, 0), new THREE.Vector3(wallSize / 2, j, 0), wallMaterial, wallGroup);
 
-                // Lines parallel to Y-axis
-                addLine(new THREE.Vector3(j, -wallSize / 2, 0), new THREE.Vector3(j, wallSize / 2, 0), wallMaterial);
+                    // Lines parallel to Y-axis
+                    addLine(new THREE.Vector3(j, -wallSize / 2, 0), new THREE.Vector3(j, wallSize / 2, 0), wallMaterial, wallGroup);
+                }
+
+                // Rotate and position the walls to form a cube
+                if (wall === 1) {
+                    wallGroup.rotateX(Math.PI / 2);
+                } else if (wall === 2) {
+                    wallGroup.rotateY(Math.PI / 2);
+                } else if (wall === 3) {
+                    wallGroup.rotateY(-Math.PI / 2);
+                } else if (wall === 4) {
+                    wallGroup.rotateX(-Math.PI / 2);
+                } else if (wall === 5) {
+                    wallGroup.rotateX(Math.PI);
+                }
+
+                scene.add(wallGroup);
             }
 
             // Create the blue cube
@@ -83,14 +102,14 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
-        function addLine(start, end, material) {
+        function addLine(start, end, material, group) {
             const points = [];
             points.push(start, end);
 
             const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
             const line = new THREE.Line(geometry, material);
-            scene.add(line);
+            group.add(line);
         }
     </script>
 </body>
