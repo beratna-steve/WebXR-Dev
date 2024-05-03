@@ -39,7 +39,7 @@
                 color: 0xffff66, // Slight yellow color
             });
 
-            // Create six walls and rotate them to form a cube
+            // Create six walls and position them to form a cube
             for (let wall = 0; wall < 6; wall++) {
                 const wallGroup = new THREE.Group();
                 for (let i = 0; i <= divisions; i++) {
@@ -52,17 +52,23 @@
                     addLine(new THREE.Vector3(j, -wallSize / 2, 0), new THREE.Vector3(j, wallSize / 2, 0), wallMaterial, wallGroup);
                 }
 
-                // Rotate and position the walls to form a cube
-                if (wall === 1) {
-                    wallGroup.rotateX(Math.PI / 2);
+                // Position the walls to form a cube
+                if (wall === 0) {
+                    wallGroup.position.z = wallSize / 2;
+                } else if (wall === 1) {
+                    wallGroup.position.z = -wallSize / 2;
                 } else if (wall === 2) {
+                    wallGroup.position.x = wallSize / 2;
                     wallGroup.rotateY(Math.PI / 2);
                 } else if (wall === 3) {
-                    wallGroup.rotateY(-Math.PI / 2);
+                    wallGroup.position.x = -wallSize / 2;
+                    wallGroup.rotateY(Math.PI / 2);
                 } else if (wall === 4) {
-                    wallGroup.rotateX(-Math.PI / 2);
+                    wallGroup.position.y = wallSize / 2;
+                    wallGroup.rotateX(Math.PI / 2);
                 } else if (wall === 5) {
-                    wallGroup.rotateX(Math.PI);
+                    wallGroup.position.y = -wallSize / 2;
+                    wallGroup.rotateX(Math.PI / 2);
                 }
 
                 scene.add(wallGroup);
