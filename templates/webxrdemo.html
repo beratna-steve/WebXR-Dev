@@ -74,16 +74,11 @@
                 scene.add(wallGroup);
             }
 
-            // Create the blue cube
+            // Create the glowing blue cube
             geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-            material = new THREE.MeshStandardMaterial({ color: 0x0000ff}); // Blue color, fully metallic, fully smooth
+            material = new THREE.MeshBasicMaterial({ color: 0x0000ff, emissive: 0x0000ff }); // Blue color, glowing from within
             mesh = new THREE.Mesh(geometry, material);
             scene.add(mesh);
-
-            // Add a light so the metallic effect is visible
-            const light = new THREE.PointLight(0xffffff, 1, 100);
-            light.position.set(0, 0, 5);
-            scene.add(light);
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
