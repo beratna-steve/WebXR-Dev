@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>Three.js WebXR Cube</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r127/three.min.js"></script>
+    <script src="https://rawgit.com/webxr-native/polyfill/master/build/webxr-api.js"></script>
+  </head>
+  <body>
+    <canvas id="cubeCanvas" width="600" height="400"></canvas>
+    <script>
+      // Get the canvas element and create a WebXR context
+      var cubeCanvas = document.getElementById('cubeCanvas');
+      var gl = cubeCanvas.getContext('webgl2');
+      if (!gl) {
+        alert("WebGL 2 is not supported in this browser.");
+        return;
+      }
+      
+      // Create a WebXR context and a renderer
+      var webxr = new WebXR(gl);
+      var renderer = new THREE.WebGLRenderer({ canvas: cubeCanvas, context: gl });
+      
+      // Create a scene and add a camera
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      scene.add(camera);
+      
+      // Create a cube and add it to the scene
+      var geometry = new THREE.BoxGeometry(1, 1, 1);
+      var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      var cube = new THREE.Mesh(geometry, material);
+      cube.position.z = -5;
+      scene.add(cube);
+      
+      // Update the renderer to match the WebXR context
+      webxr.addEventListener('render', function() {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
+        cubeCanvas.width = window.innerWidth * 2;
+        cubeCanvas.height = window.innerHeight * 2;
+      });
+      
+      // Render the scene and update the WebXR context
+      function render() {
+        renderer.render(scene, camera);
+        webxr.update();
+        requestAnimationFrame(render);
+      }
+      render();
+    </script>
+  </body>
+</html>
